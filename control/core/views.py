@@ -7,6 +7,7 @@ from django.contrib import messages
 import pandas as pd
 
 
+
 class HomeView(TemplateView):
     template_name = 'core/home.html'
 
@@ -22,8 +23,22 @@ class TaskListView(ListView):
 
         tasks = context['tasks']
 
-        df = pd.DataFrame()
+        df = pd.DataFrame({
+            'tarea': [task.titulo for task in tasks],
+            'inicio': [task.f_inicio for task in tasks],
+            'fin': [task.f_fin for task in tasks],
+            'estado': [task.accion for task in tasks],
+        })
+        color_map = {
+            'INI': 'red',
+            'PEN': 'blue',
+            'COM': 'green',
+            'CAN': 'yellow',
+        }
 
+        df['color'] = df ['estado'].map(lambda x: color_map.get(x, 'black'))
+
+        fig = 
 
 
 
