@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <h1>Lista de Tareas</h1>
   <table>
@@ -20,8 +21,8 @@
             <td>{{ task.f_inicio|date:"Y-m-d" }}</td>
             <td>{{ task.f_fin|date:"Y-m-d" }}</td>
             <td>
-                <a href="{% url 'core:task_update' task.id %}">Editar</a>
-                <a href="{% url 'core:task_delete' task.id %}">Eliminar</a>
+                <a class="btn btn-primary"type="submit" value="Submit" href="{% url 'core:task_update' task.id %}" >Editar</a>
+                <a class="btn btn-danger" href="{% url 'core:task_delete' task.id %}" >Eliminar</a>
             </td>
         </tr>
         {% endfor %}

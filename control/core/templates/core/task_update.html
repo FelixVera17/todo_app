@@ -4,14 +4,15 @@
 
 {% endblock  %}
 
+{% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> {% endcomment %}
 
 {% block content  %}
 <div style="width: 100%; margin:5px auto;">
     <form method="POST" action="">
+        {% csrf_token %}
         {{form}}
-        <button style="float: left; margin-top: 18px"  type="submit" class="btn btn-danger">{% csrf_token %}
-            <span class="fa fa-floppy-o" aria-hidden="true"></span> GUARDAR
-        </button>
+        <button type="submit" class="btn btn-success">guardar</button>
+        
     </form> 
 </div>
 
