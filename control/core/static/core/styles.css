@@ -27,3 +27,8 @@ h1, h2, h3 {
 .btn:hover {
     background-color: #4cae4c;
 }
+
+
+.completed {
+    text-decoration: line-through;
+}

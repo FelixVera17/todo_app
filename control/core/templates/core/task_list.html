@@ -3,17 +3,18 @@
 {% block content %}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<h1>Lista de Tareas</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>titulo</th>
-        <th>estado</th>
-        <th>dia de inicio</th>
-        <th>dia fin</th>
-      </tr>
-    </thead>
-    <tbody>
+<h4 class="text-center mb-4">Lista de Tareas</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Estado</th>
+                <th>Día de Inicio</th>
+                <th>Día Fin</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for task in tasks %}
         <tr>
             <td>{{ task.titulo }}</td>
@@ -25,12 +26,27 @@
                 <a class="btn btn-danger" href="{% url 'core:task_delete' task.id %}" >Eliminar</a>
             </td>
         </tr>
+        <tr>
+            <td colspan="5" class="text-center">
+            <form action="{% url 'core:toggle_task' task.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link" style="text-decoration: none;">
+                    {% if task.completed %}
+                        ✔ {{ task.title|safe }}
+                    {% else %}
+                        {{ task.title }}
+                    {% endif %}
+                </button>
+            </form>
+        </div>
         {% endfor %}
     </tbody>
 </table>
+<div class="text-center mb-4">
+    <a href="{% url 'core:task_create' %}" class="btn btn-success">Crear nueva tarea</a>
+</div>
 
-
-<div class="pagination">
+<div class="text-center pagination mt-4">
     {% if page_obj.has_previous %}
         <a href="?page=1" class="btn btn-outline-primary">&laquo; Primera</a>
         <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">&lsaquo; Anterior</a>
@@ -48,7 +64,12 @@
         <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-primary">Siguiente &rsaquo;</a>
         <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-primary">Última &raquo;</a>
     {% endif %}
-  </div>
+</div>
 
-  <a href="{% url 'core:task_create' %}">Crear nueva tarea</a>
-  {% endblock %}
+{% endblock %}
+
+
+
+
+
+
