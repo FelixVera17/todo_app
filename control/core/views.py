@@ -1,48 +1,50 @@
-from django.shortcuts import render, rever
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
+from django.shortcuts import render
+from django.views.generic import ListView,DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from core.models import Task
 from django.urls import reverse_lazy
 from core.forms import TaskForm
+from django.contrib import messages
+
 
 
 class HomeView(TemplateView):
-    template_name= 'core/home.html'
+    template_name = 'core/home.html'
 
-
-#lista
+# Lista
 class TaskListView(ListView):
     model = Task
     paginate_by = 10
     template_name = 'core/task_list.html'
-    content_object_name = 'tasks'
+    context_object_name = 'tasks'
 
-
-#crear
-class TaskFormMixin(CreateView,UpdateView):
+# Crear y actualizar
+class TaskCreateView(CreateView):
     model = Task
     template_name = 'core/task_create.html'
     form_class = TaskForm
     success_url = reverse_lazy('core:task_list')
 
-
-class TaskCreateView(CreateView):
-    pass
-
-
 class TaskUpdateView(UpdateView):
-    pass
-
+    model = Task
+    form_class =TaskForm
+    template_name = 'core/task_update.html'
+    
+    def form_valid(self, form):
+        mensaje = 'Se ha modificado el registro'
+        messages.add_message(self.request, messages.SUCCESS, mensaje)
+        return super().form_valid(form)
+       
+    def get_success_url(self):
+        return reverse_lazy('core:task_list')
 
 
 class TaskDeleteView(DeleteView):
     model = Task
-    template_name= 'core/task_delete.html'
+    template_name = 'core/task_delete.html'
     success_url = reverse_lazy('core:task_list')
 
-#detail
+# Detalle
 class TaskDetailView(DetailView):
     model = Task
     template_name = 'core/task_detail.html'
     context_object_name = 'task'
-
-

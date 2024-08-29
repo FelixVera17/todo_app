@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Lista de Tareas</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>titulo</th>
+        <th>estado</th>
+        <th>dia de inicio</th>
+        <th>dia fin</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.titulo }}</td>
+            <td>{{ task.estado }}</td>
+            <td>{{ task.f_inicio|date:"Y-m-d" }}</td>
+            <td>{{ task.f_fin|date:"Y-m-d" }}</td>
+            <td>
+                <a href="{% url 'core:task_update' task.id %}">Editar</a>
+                <a href="{% url 'core:task_delete' task.id %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page=1" class="btn btn-outline-primary">&laquo; Primera</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">&lsaquo; Anterior</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <span class="current-page btn btn-primary">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{ num }}" class="btn btn-outline-primary">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-primary">Siguiente &rsaquo;</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-primary">Última &raquo;</a>
+    {% endif %}
+  </div>
+
+  <a href="{% url 'core:task_create' %}">Crear nueva tarea</a>
+  {% endblock %}
