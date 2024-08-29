@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from core.forms import TaskForm
 from django.contrib import messages
 import pandas as pd
-
+import plotly.express as px
 
 
 class HomeView(TemplateView):
@@ -38,8 +38,11 @@ class TaskListView(ListView):
 
         df['color'] = df ['estado'].map(lambda x: color_map.get(x, 'black'))
 
-        fig = 
-
+        fig = px.timeline(df, x_start="inicio", x_end='fin', y='tarea', color = 'estado')
+        fig.update_layout(coloraxis_showscale= False)
+        fig.update_yaxes(autorange = True)
+        context['gantt_chart'] = fig.to_html(full_html = False)
+        return context
 
 
 
